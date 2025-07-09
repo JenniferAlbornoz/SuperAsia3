@@ -82,19 +82,27 @@ superasia3/
 Edita el archivo `src/main/resources/application.properties`:
 
 ```properties
-# Configuración de base de datos
-spring.datasource.url=jdbc:mysql://localhost:3306/superasia3
-spring.datasource.username=tu_usuario
-spring.datasource.password=tu_contraseña
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.application.name=usuario
+# Puerto del microservicio usuario
+server.port=8081
 
-# Configuración JPA
+# Configuración de la base de datos Oracle Cloud
+spring.datasource.url=jdbc:oracle:thin:@tcps://adb.sa-santiago-1.oraclecloud.com:1522/g0124d9d856f5e7_pruebafullstack_high.adb.oraclecloud.com?retry_count=20&retry_delay=3
+spring.datasource.username=ADMIN
+spring.datasource.password=contraseña en codigo
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+# JPA/Hibernate
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
 
-# Puerto del servidor
-server.port=8080
+jwt.secret=contraseña en codigo
+jwt.expiration=86400000
+
+# Swagger/OpenAPI
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
 ## 📚 API Endpoints
