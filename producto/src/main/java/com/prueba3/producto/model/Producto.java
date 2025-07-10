@@ -21,4 +21,6 @@ public class Producto {
 
     @Column(nullable = false)
     private Double precio;
+    @Column(name = "CATEGORIA", nullable = false)
+    private String categoria;
 }

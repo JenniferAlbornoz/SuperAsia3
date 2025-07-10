@@ -6,11 +6,12 @@ import com.prueba3.producto.dto.ProductoDTO;
 import com.prueba3.producto.model.Producto;
 import com.prueba3.producto.repository.ProductoRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 @Service
 public class ProductoService {
     private final ProductoRepository productoRepository;

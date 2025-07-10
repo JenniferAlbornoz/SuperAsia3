@@ -18,4 +18,7 @@ public class ProductoDTO {
     @NotNull(message = "El precio es obligatorio")
     @Min(value = 0, message = "El precio debe ser mayor o igual a 0")
     private Double precio;
+   
+    @NotBlank(message = "La categoría es obligatoria")
+        private String categoria;
 }
