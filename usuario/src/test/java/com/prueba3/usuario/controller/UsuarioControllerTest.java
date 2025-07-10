@@ -27,8 +27,6 @@ class UsuarioControllerTest {
     @MockBean
     private UsuarioService usuarioService;
 
-    @MockBean
-        private UsuarioService usuarioService;
 
     @Test
     void crearUsuario_emailVacio_retorna400() throws Exception {
