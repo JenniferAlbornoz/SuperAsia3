@@ -2,6 +2,8 @@ package com.prueba3.usuario.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Data
