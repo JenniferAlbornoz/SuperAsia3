@@ -29,13 +29,13 @@ class InventarioServiceTest {
     void crearInventario() {
         InventarioDTO dto = new InventarioDTO();
         dto.setNombre("Test");
-        dto.setStock(10);
+        dto.setCantidad(10);
         dto.setProductoId(1L);
 
         Inventario inventario = Inventario.builder()
                 .id(1L)
                 .nombre("Test")
-                .stock(10)
+                .cantidad(10)
                 .productoId(1L)
                 .build();
 

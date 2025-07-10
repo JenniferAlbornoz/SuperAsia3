@@ -15,9 +15,9 @@ public class InventarioDTO {
 
     private String descripcion;
 
-    @NotNull(message = "El stock es obligatorio")
-    @Min(value = 0, message = "El stock debe ser mayor o igual a 0")
-    private Integer stock;
+    @NotNull(message = "La cantidad es obligatoria")
+    @Min(value = 0, message = "La cantidad debe ser mayor o igual a 0")
+    private Integer cantidad;
 
     @NotNull(message = "El productoId es obligatorio")
     private Long productoId;

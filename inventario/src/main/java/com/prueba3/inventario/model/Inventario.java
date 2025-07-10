@@ -20,8 +20,8 @@ public class Inventario {
 
     private String descripcion;
 
-    @Column(nullable = false)
-    private Integer stock;
+    @Column(name = "CANTIDAD", nullable = false)
+    private Integer cantidad;
 
     @Column(nullable = false)
     private Long productoId;
