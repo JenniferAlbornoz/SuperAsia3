@@ -3,6 +3,7 @@ package com.prueba3.carrito.controller;
 
 
 import com.prueba3.carrito.dto.CarritoDTO;
+import com.prueba3.carrito.dto.ItemCarritoDTO;
 import com.prueba3.carrito.service.CarritoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +53,13 @@ public class CarritoController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         carritoService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/{carritoId}/items")
+    public ResponseEntity<CarritoDTO> agregarItem(
+        @PathVariable Long carritoId,
+        @Valid @RequestBody ItemCarritoDTO itemDto) {
+    CarritoDTO carritoActualizado = carritoService.agregarItem(carritoId, itemDto);
+    return ResponseEntity.ok(carritoActualizado);
     }
 }

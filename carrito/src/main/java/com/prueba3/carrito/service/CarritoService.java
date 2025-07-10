@@ -7,9 +7,12 @@ import com.prueba3.carrito.dto.ItemCarritoDTO;
 import com.prueba3.carrito.model.Carrito;
 import com.prueba3.carrito.model.ItemCarrito;
 import com.prueba3.carrito.repository.CarritoRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
+import com.prueba3.carrito.repository.ItemCarritoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,10 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class CarritoService {
     private final CarritoRepository carritoRepository;
+    @Autowired
+    private ItemCarritoRepository itemCarritoRepository;
 
-    public CarritoService(CarritoRepository carritoRepository) {
+    public CarritoService(CarritoRepository carritoRepository, ItemCarritoRepository itemCarritoRepository) {
         this.carritoRepository = carritoRepository;
+        this.itemCarritoRepository = itemCarritoRepository;
     }
+
 
     public CarritoDTO crear(CarritoDTO dto) {
         Carrito carrito = toEntity(dto);
@@ -40,15 +47,29 @@ public class CarritoService {
         return carritoRepository.findAll().stream().map(this::toDTO).toList();
     }
 
+    @Transactional
     public CarritoDTO actualizar(Long id, CarritoDTO dto) {
         Carrito carrito = carritoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
         carrito.setUsuarioId(dto.getUsuarioId());
-        carrito.setItems(dto.getItems().stream().map(this::toEntity).collect(Collectors.toList()));
+
+        // Asocia el carrito a cada ítem nuevo
+        List<ItemCarrito> itemsNuevos = dto.getItems().stream()
+            .map(itemDto -> {
+                ItemCarrito item = toEntity(itemDto);
+                item.setCarrito(carrito);
+                return item;
+            })
+            .collect(Collectors.toList());
+        // Elimina explícitamente los ítems antiguos de la base de datos
+        itemCarritoRepository.deleteByCarritoId(carrito.getId());
+
+        carrito.getItems().clear();
+        carrito.getItems().addAll(itemsNuevos);
+
         Carrito actualizado = carritoRepository.save(carrito);
         return toDTO(actualizado);
-    }
-
+    }  
     public void eliminar(Long id) {
         carritoRepository.deleteById(id);
     }
@@ -83,5 +104,24 @@ public class CarritoService {
         ItemCarrito item = new ItemCarrito();
         BeanUtils.copyProperties(dto, item);
         return item;
+    }
+    public CarritoDTO agregarItem(Long carritoId, ItemCarritoDTO itemDto) {
+    // 1. Buscar el carrito
+    Carrito carrito = carritoRepository.findById(carritoId)
+            .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+    // 2. Crear el nuevo ítem
+        ItemCarrito item = toEntity(itemDto);
+
+        // 3. Asociar el carrito al ítem (¡esto es clave!)
+        item.setCarrito(carrito);
+
+        // 4. Agregar el ítem a la lista
+        carrito.getItems().add(item);
+
+        // 5. Guardar el carrito actualizado
+        Carrito actualizado = carritoRepository.save(carrito);
+
+        // 6. Devolver el DTO actualizado
+        return toDTO(actualizado);
     }
 }

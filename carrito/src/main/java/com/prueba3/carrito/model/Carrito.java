@@ -3,7 +3,7 @@ package com.prueba3.carrito.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +18,8 @@ public class Carrito {
 
     @Column(nullable = false)
     private Long usuarioId;
-
+    @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "carrito_id")
-    private List<ItemCarrito> items;
+    private List<ItemCarrito> items = new ArrayList<>();
 }

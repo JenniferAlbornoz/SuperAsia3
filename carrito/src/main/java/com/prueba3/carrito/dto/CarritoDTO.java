@@ -4,6 +4,7 @@ package com.prueba3.carrito.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,5 +14,6 @@ public class CarritoDTO {
     @NotNull(message = "El usuarioId es obligatorio")
     private Long usuarioId;
 
-    private List<ItemCarritoDTO> items;
+    private List<ItemCarritoDTO> items = new ArrayList<>();
+
 }
